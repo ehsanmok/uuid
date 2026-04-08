@@ -1,0 +1,21 @@
+package:
+  name: uuid
+  version: "0.1.0"
+
+source:
+  path: .
+
+build:
+  script:
+    - mkdir -p $PREFIX/lib/mojo
+    - cp -r uuid $PREFIX/lib/mojo/
+
+requirements:
+  host:
+    - mojo <1.0
+  run:
+    - mojo <1.0
+
+about:
+  summary: Fast UUID v4 and v7 generation for Mojo with SIMD-accelerated hex encoding
+  license: MIT
