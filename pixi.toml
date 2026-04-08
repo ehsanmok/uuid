@@ -21,8 +21,13 @@ mojo = "<1.0"
 pre-commit = ">=4.2.0,<5"
 mojodoc = { git = "https://github.com/ehsanmok/mojodoc.git", branch = "main" }
 
+[feature.dev.tasks]
+docs = "mojodoc ./uuid --open"
+docs-build = "mojodoc ./uuid --out-dir target/doc --base-url /uuid/"
+
 [environments]
 default = { features = ["dev"], solve-group = "default" }
+dev = { features = ["dev"], solve-group = "default" }
 
 [tasks]
 # Format
@@ -42,6 +47,3 @@ example = "mojo -I . examples/example.mojo"
 # Benchmark
 bench = "mojo -I . benchmark/bench.mojo"
 
-# Docs
-docs = "mojodoc ./uuid --open"
-docs-build = "mojodoc ./uuid --out-dir target/doc --base-url /uuid/"
