@@ -18,11 +18,15 @@ def test_nibble_to_hex_digits() raises:
 
 def test_nibble_to_hex_letters() raises:
     """nibble_to_hex maps 10-15 to ASCII 'a'-'f'."""
-    var expected = List[Int](97, 98, 99, 100, 101, 102)
+    var letters = "abcdef"
     for i in range(6):
         var v = SIMD[DType.uint8, 16](UInt8(10 + i))
         var result = nibble_to_hex(v)
-        assert_equal(Int(result[0]), expected[i], "letter " + String(i))
+        assert_equal(
+            Int(result[0]),
+            Int(letters.as_bytes()[i]),
+            "letter " + String(i),
+        )
 
 
 def test_nibble_to_hex_all_lanes() raises:
@@ -72,7 +76,7 @@ def test_hex_char_to_nibble_invalid_raises() raises:
     """hex_char_to_nibble raises on non-hex characters."""
     var raised = False
     try:
-        _ = hex_char_to_nibble(ord("g"))
+        _ = hex_char_to_nibble(UInt8(ord("g")))
     except:
         raised = True
     assert_true(raised, "expected Error for 'g'")
@@ -82,7 +86,7 @@ def test_hex_char_to_nibble_space_raises() raises:
     """hex_char_to_nibble raises on whitespace."""
     var raised = False
     try:
-        _ = hex_char_to_nibble(ord(" "))
+        _ = hex_char_to_nibble(UInt8(ord(" ")))
     except:
         raised = True
     assert_true(raised, "expected Error for space")
@@ -122,6 +126,14 @@ def test_encode_all_ff() raises:
         assert_equal(Int(encoded[i]), 102, "pos " + String(i))  # 'f' = 102
 
 
+def _simd_eq(a: SIMD[DType.uint8, 16], b: SIMD[DType.uint8, 16]) -> Bool:
+    """Return True if all 16 bytes of two SIMD vectors are equal."""
+    for i in range(16):
+        if a[i] != b[i]:
+            return False
+    return True
+
+
 def test_roundtrip_known_vector() raises:
     """Decode(encode(x)) == x for a known UUID byte sequence."""
     var raw = SIMD[DType.uint8, 16](
@@ -133,14 +145,12 @@ def test_roundtrip_known_vector() raises:
     for i in range(32):
         hex_str += chr(Int(encoded[i]))
     var decoded = hex_decode_32(hex_str.as_bytes())
-    assert_true(
-        (raw == decoded).reduce_and(), "roundtrip bytes must match"
-    )
+    assert_true(_simd_eq(raw, decoded), "roundtrip bytes must match")
 
 
 def test_roundtrip_all_bytes() raises:
     """Decode(encode(x)) == x for every possible byte value 0x00-0xFF."""
-    # Test all 256 byte values by cycling through them.
+    # Test representative byte values by cycling through them.
     var raw = SIMD[DType.uint8, 16]()
     for i in range(16):
         raw[i] = UInt8(i * 16)  # 0x00, 0x10, 0x20, ..., 0xF0
@@ -149,9 +159,7 @@ def test_roundtrip_all_bytes() raises:
     for i in range(32):
         hex_str += chr(Int(encoded[i]))
     var decoded = hex_decode_32(hex_str.as_bytes())
-    assert_true(
-        (raw == decoded).reduce_and(), "all-byte roundtrip must match"
-    )
+    assert_true(_simd_eq(raw, decoded), "all-byte roundtrip must match")
 
 
 def test_decode_known_vector() raises:

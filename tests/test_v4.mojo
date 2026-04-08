@@ -94,8 +94,8 @@ def test_uuid4_uniqueness_small() raises:
     var seen = List[String]()
     for _ in range(10):
         var s = String(uuid4())
-        for prev in seen:
-            assert_false(s == prev[], "uuid4() collision detected")
+        for j in range(len(seen)):
+            assert_false(s == seen[j], "uuid4() collision detected")
         seen.append(s)
 
 
@@ -110,10 +110,10 @@ def test_uuid4_not_nil() raises:
 # =============================================================================
 
 
-def test_uuid4_batch_count() raises:
-    """uuid4_batch[N]() returns exactly N UUIDs."""
+def test_uuid4_batch_distinct() raises:
+    """uuid4_batch[N]() returns N distinct UUIDs."""
     var batch = uuid4_batch[5]()
-    # Verify all 5 are distinct.
+    # Verify all 5 are distinct by comparing each pair.
     for i in range(5):
         for j in range(i + 1, 5):
             assert_false(

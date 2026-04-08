@@ -112,9 +112,10 @@ def main() raises:
 
     var u = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
     var bytes = u.to_bytes()
-    print("Byte[0] = 0x" + u.to_hex()[:2])  # "55"
-    # Direct SIMD access:
+    # Access individual bytes via the underlying SIMD vector.
     print("bytes[0] =", Int(u.bytes[0]))   # 85 (0x55)
+    print("bytes[1] =", Int(u.bytes[1]))   # 14 (0x0e)
+    print("hex string =", u.to_hex())      # "550e8400e29b41d4a716446655440000"
 
     # =========================================================================
     # Batch generation

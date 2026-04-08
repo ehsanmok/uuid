@@ -2,7 +2,7 @@
 
 from std.testing import assert_equal, assert_true, assert_false, TestSuite
 from uuid.core import UUID
-from uuid.v7 import uuid7, uuid7_extract_ms
+from uuid.v7 import uuid7, uuid7_extract_ms, V7Generator
 
 # =============================================================================
 # Version and variant bits
@@ -78,20 +78,21 @@ def test_uuid7_extract_ms_consistent() raises:
 
 
 def test_uuid7_monotonic_string_order() raises:
-    """Successive uuid7() calls are lexicographically non-decreasing as strings.
+    """V7Generator produces strictly increasing UUID strings.
 
     Because v7 encodes the millisecond timestamp in the most significant
-    bytes, lexicographic string order equals time order for UUIDs generated
-    in the same process at the same or increasing time.
+    bytes and V7Generator increments rand_a within the same millisecond,
+    lexicographic string order equals time order for all generated UUIDs.
     """
-    var prev = String(uuid7())
+    var gen = V7Generator()
+    var prev = String(gen.generate())
     for _ in range(20):
-        var curr = String(uuid7())
+        var curr = String(gen.generate())
         # The string representation sorts correctly because the timestamp
         # occupies the first 12 hex characters (48 bits).
         assert_true(
             curr >= prev,
-            "uuid7 strings must be non-decreasing: "
+            "V7Generator strings must be non-decreasing: "
             + prev
             + " > "
             + curr,
@@ -100,13 +101,14 @@ def test_uuid7_monotonic_string_order() raises:
 
 
 def test_uuid7_monotonic_timestamp() raises:
-    """Successive uuid7() calls have non-decreasing embedded timestamps."""
-    var prev_ms = uuid7_extract_ms(uuid7())
+    """V7Generator produces non-decreasing embedded timestamps."""
+    var gen = V7Generator()
+    var prev_ms = uuid7_extract_ms(gen.generate())
     for _ in range(20):
-        var curr_ms = uuid7_extract_ms(uuid7())
+        var curr_ms = uuid7_extract_ms(gen.generate())
         assert_true(
             curr_ms >= prev_ms,
-            "uuid7 timestamps must be non-decreasing",
+            "V7Generator timestamps must be non-decreasing",
         )
         prev_ms = curr_ms
 
