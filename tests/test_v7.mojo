@@ -10,28 +10,28 @@ from uuid.v7 import uuid7, uuid7_extract_ms, V7Generator
 
 
 def test_uuid7_version() raises:
-    """uuid7() always produces a UUID with version == 7."""
+    """Always produces a UUID with version == 7."""
     for _ in range(10):
         var u = uuid7()
         assert_equal(u.version(), 7, "version must be 7")
 
 
 def test_uuid7_variant() raises:
-    """uuid7() always produces a UUID with RFC 9562 variant (2 = 0b10)."""
+    """Always produces a UUID with RFC 9562 variant (2 = 0b10)."""
     for _ in range(10):
         var u = uuid7()
         assert_equal(u.variant(), 2, "variant must be 2 (RFC 9562)")
 
 
 def test_uuid7_byte6_high_nibble() raises:
-    """uuid7() sets the high nibble of byte 6 to 0x7."""
+    """Sets the high nibble of byte 6 to 0x7."""
     for _ in range(10):
         var u = uuid7()
         assert_equal(Int(u.bytes[6] >> 4), 7, "byte6 high nibble == 7")
 
 
 def test_uuid7_byte8_high_bits() raises:
-    """uuid7() sets the high 2 bits of byte 8 to 0b10."""
+    """Sets the high 2 bits of byte 8 to 0b10."""
     for _ in range(10):
         var u = uuid7()
         assert_equal(Int(u.bytes[8] >> 6), 2, "byte8 high 2 bits == 0b10")
@@ -43,14 +43,14 @@ def test_uuid7_byte8_high_bits() raises:
 
 
 def test_uuid7_extract_ms_nonzero() raises:
-    """uuid7_extract_ms returns a positive (non-zero) timestamp."""
+    """Returns a positive (non-zero) timestamp."""
     var u = uuid7()
     var ms = uuid7_extract_ms(u)
     assert_true(ms > 0, "timestamp must be > 0")
 
 
 def test_uuid7_extract_ms_reasonable() raises:
-    """uuid7_extract_ms returns a timestamp > year-2020 epoch in ms."""
+    """Returns a timestamp > year-2020 epoch in ms."""
     # 2020-01-01T00:00:00Z in Unix ms = 1577836800000
     var u = uuid7()
     var ms = uuid7_extract_ms(u)
@@ -58,7 +58,7 @@ def test_uuid7_extract_ms_reasonable() raises:
 
 
 def test_uuid7_extract_ms_consistent() raises:
-    """uuid7_extract_ms round-trips: bytes 0-5 encode the stored timestamp."""
+    """Round-trips: bytes 0-5 encode the stored timestamp."""
     var u = uuid7()
     var ms = uuid7_extract_ms(u)
     # Re-extract manually from raw bytes and compare.
@@ -140,7 +140,7 @@ def test_uuid7_parse_roundtrip() raises:
 
 
 def test_uuid7_not_nil() raises:
-    """uuid7() never produces the nil UUID."""
+    """Never produces the nil UUID."""
     for _ in range(10):
         assert_false(uuid7().is_nil(), "uuid7() must not be nil")
 

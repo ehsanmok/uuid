@@ -29,7 +29,7 @@ Example:
     print(a.version())  # 7
 """
 
-from random import random_ui64
+from std.random import random_ui64
 from std.ffi import external_call
 from uuid.core import UUID
 

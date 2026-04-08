@@ -5,8 +5,8 @@ from uuid.core import UUID
 from uuid.simd_hex import hex_encode_16
 
 # Well-known test UUID string.
-alias KNOWN_STR = "550e8400-e29b-41d4-a716-446655440000"
-alias KNOWN_HEX = "550e8400e29b41d4a716446655440000"
+comptime KNOWN_STR = "550e8400-e29b-41d4-a716-446655440000"
+comptime KNOWN_HEX = "550e8400e29b41d4a716446655440000"
 
 # =============================================================================
 # Parse: valid inputs
@@ -122,7 +122,7 @@ def test_str_dash_positions() raises:
 
 
 def test_to_hex_no_dashes() raises:
-    """to_hex() returns 32 characters with no dashes."""
+    """Returns 32 characters with no dashes."""
     var u = UUID.parse(KNOWN_STR)
     var h = u.to_hex()
     assert_equal(len(h), 32, "hex string must be 32 chars")
@@ -130,7 +130,7 @@ def test_to_hex_no_dashes() raises:
 
 
 def test_to_hex_is_lowercase() raises:
-    """to_hex() always produces lowercase hex characters."""
+    """Always produces lowercase hex characters."""
     var u = UUID.parse("FFFFFFFF-FFFF-4FFF-AFFF-FFFFFFFFFFFF")
     var h = u.to_hex()
     var b = h.as_bytes()
@@ -153,7 +153,7 @@ def test_nil_is_nil() raises:
 
 
 def test_non_nil_is_not_nil() raises:
-    """is_nil() returns False for a non-zero UUID."""
+    """Returns False for a non-zero UUID."""
     var u = UUID.parse(KNOWN_STR)
     assert_false(u.is_nil(), "known UUID must not be nil")
 
@@ -172,14 +172,14 @@ def test_nil_string() raises:
 
 
 def test_version_4() raises:
-    """version() extracts the correct value for a v4 UUID."""
+    """Extracts the correct version value for a v4 UUID."""
     # "41d4" -> byte 6 = 0x41 -> high nibble = 4
     var u = UUID.parse(KNOWN_STR)
     assert_equal(u.version(), 4)
 
 
 def test_variant_rfc() raises:
-    """variant() extracts the RFC 9562 variant (2 = 0b10) from byte 8."""
+    """Extracts the RFC 9562 variant (2 = 0b10) from byte 8."""
     # "a716" -> byte 8 = 0xa7 -> high 2 bits = 0b10 = 2
     var u = UUID.parse(KNOWN_STR)
     assert_equal(u.variant(), 2)
@@ -252,7 +252,7 @@ def test_hash_different_likely_different() raises:
 
 
 def test_to_bytes_roundtrip() raises:
-    """to_bytes() returns the same byte values as the internal SIMD vector."""
+    """Returns the same byte values as the internal SIMD vector."""
     var u = UUID.parse(KNOWN_STR)
     var b = u.to_bytes()
     for i in range(16):
@@ -260,7 +260,7 @@ def test_to_bytes_roundtrip() raises:
 
 
 def test_to_bytes_nil() raises:
-    """to_bytes() on nil UUID returns all zeros."""
+    """Returns all zeros for the nil UUID."""
     var n = UUID.nil()
     var b = n.to_bytes()
     for i in range(16):

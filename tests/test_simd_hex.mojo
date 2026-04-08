@@ -9,7 +9,7 @@ from uuid.simd_hex import hex_encode_16, hex_decode_32, nibble_to_hex, hex_char_
 
 
 def test_nibble_to_hex_digits() raises:
-    """nibble_to_hex maps 0-9 to ASCII '0'-'9'."""
+    """Maps 0-9 to ASCII '0'-'9'."""
     for i in range(10):
         var v = SIMD[DType.uint8, 16](UInt8(i))
         var result = nibble_to_hex(v)
@@ -17,7 +17,7 @@ def test_nibble_to_hex_digits() raises:
 
 
 def test_nibble_to_hex_letters() raises:
-    """nibble_to_hex maps 10-15 to ASCII 'a'-'f'."""
+    """Maps 10-15 to ASCII 'a'-'f'."""
     var letters = "abcdef"
     for i in range(6):
         var v = SIMD[DType.uint8, 16](UInt8(10 + i))
@@ -30,7 +30,7 @@ def test_nibble_to_hex_letters() raises:
 
 
 def test_nibble_to_hex_all_lanes() raises:
-    """nibble_to_hex operates correctly on all 16 lanes simultaneously."""
+    """Operates correctly on all 16 lanes simultaneously."""
     var v = SIMD[DType.uint8, 16](
         0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
     )
@@ -50,14 +50,14 @@ def test_nibble_to_hex_all_lanes() raises:
 
 
 def test_hex_char_to_nibble_digits() raises:
-    """hex_char_to_nibble converts '0'-'9' to 0-9."""
+    """Converts '0'-'9' to 0-9."""
     for i in range(10):
         var c = UInt8(48 + i)
         assert_equal(Int(hex_char_to_nibble(c)), i)
 
 
 def test_hex_char_to_nibble_lowercase() raises:
-    """hex_char_to_nibble converts 'a'-'f' to 10-15."""
+    """Converts 'a'-'f' to 10-15."""
     var letters = "abcdef"
     for i in range(6):
         var c = letters.as_bytes()[i]
@@ -65,7 +65,7 @@ def test_hex_char_to_nibble_lowercase() raises:
 
 
 def test_hex_char_to_nibble_uppercase() raises:
-    """hex_char_to_nibble converts 'A'-'F' to 10-15."""
+    """Converts 'A'-'F' to 10-15."""
     var letters = "ABCDEF"
     for i in range(6):
         var c = letters.as_bytes()[i]
@@ -73,7 +73,7 @@ def test_hex_char_to_nibble_uppercase() raises:
 
 
 def test_hex_char_to_nibble_invalid_raises() raises:
-    """hex_char_to_nibble raises on non-hex characters."""
+    """Raises on non-hex characters."""
     var raised = False
     try:
         _ = hex_char_to_nibble(UInt8(ord("g")))
@@ -83,7 +83,7 @@ def test_hex_char_to_nibble_invalid_raises() raises:
 
 
 def test_hex_char_to_nibble_space_raises() raises:
-    """hex_char_to_nibble raises on whitespace."""
+    """Raises on whitespace."""
     var raised = False
     try:
         _ = hex_char_to_nibble(UInt8(ord(" ")))
@@ -98,7 +98,7 @@ def test_hex_char_to_nibble_space_raises() raises:
 
 
 def test_encode_known_vector() raises:
-    """hex_encode_16 produces correct output for a known input."""
+    """Produces correct output for a known input."""
     var raw = SIMD[DType.uint8, 16](
         0x55, 0x0e, 0x84, 0x00, 0xe2, 0x9b, 0x41, 0xd4,
         0xa7, 0x16, 0x44, 0x66, 0x55, 0x44, 0x00, 0x00,
@@ -111,7 +111,7 @@ def test_encode_known_vector() raises:
 
 
 def test_encode_all_zeros() raises:
-    """hex_encode_16 encodes all-zero bytes as 32 '0' characters."""
+    """Encodes all-zero bytes as 32 '0' characters."""
     var raw = SIMD[DType.uint8, 16](0)
     var encoded = hex_encode_16(raw)
     for i in range(32):
@@ -119,7 +119,7 @@ def test_encode_all_zeros() raises:
 
 
 def test_encode_all_ff() raises:
-    """hex_encode_16 encodes 0xFF bytes as 'ff' pairs."""
+    """Encodes 0xFF bytes as 'ff' pairs."""
     var raw = SIMD[DType.uint8, 16](0xFF)
     var encoded = hex_encode_16(raw)
     for i in range(32):
@@ -163,7 +163,7 @@ def test_roundtrip_all_bytes() raises:
 
 
 def test_decode_known_vector() raises:
-    """hex_decode_32 decodes a known hex string correctly."""
+    """Decodes a known hex string correctly."""
     var hex_str = "550e8400e29b41d4a716446655440000"
     var decoded = hex_decode_32(hex_str.as_bytes())
     assert_equal(Int(decoded[0]), 0x55)
@@ -175,7 +175,7 @@ def test_decode_known_vector() raises:
 
 
 def test_decode_uppercase() raises:
-    """hex_decode_32 accepts uppercase hex characters."""
+    """Accepts uppercase hex characters."""
     var hex_str = "550E8400E29B41D4A716446655440000"
     var decoded = hex_decode_32(hex_str.as_bytes())
     assert_equal(Int(decoded[0]), 0x55)
@@ -183,7 +183,7 @@ def test_decode_uppercase() raises:
 
 
 def test_decode_wrong_length_raises() raises:
-    """hex_decode_32 raises if input length is not exactly 32."""
+    """Raises if input length is not exactly 32."""
     var raised = False
     try:
         _ = hex_decode_32("abc".as_bytes())
@@ -193,7 +193,7 @@ def test_decode_wrong_length_raises() raises:
 
 
 def test_decode_invalid_char_raises() raises:
-    """hex_decode_32 raises on an invalid hex character."""
+    """Raises on an invalid hex character."""
     var raised = False
     try:
         _ = hex_decode_32("550e8400e29b41d4a71644665544gggg".as_bytes())

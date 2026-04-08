@@ -10,28 +10,28 @@ from uuid.v4 import uuid4, uuid4_batch
 
 
 def test_uuid4_version() raises:
-    """uuid4() always produces a UUID with version == 4."""
+    """Always produces a UUID with version == 4."""
     for _ in range(10):
         var u = uuid4()
         assert_equal(u.version(), 4, "version must be 4")
 
 
 def test_uuid4_variant() raises:
-    """uuid4() always produces a UUID with RFC 9562 variant (2 = 0b10)."""
+    """Always produces a UUID with RFC 9562 variant (2 = 0b10)."""
     for _ in range(10):
         var u = uuid4()
         assert_equal(u.variant(), 2, "variant must be 2 (RFC 9562)")
 
 
 def test_uuid4_byte6_high_nibble() raises:
-    """uuid4() sets the high nibble of byte 6 to 0x4."""
+    """Sets the high nibble of byte 6 to 0x4."""
     for _ in range(10):
         var u = uuid4()
         assert_equal(Int(u.bytes[6] >> 4), 4, "byte6 high nibble == 4")
 
 
 def test_uuid4_byte8_high_bits() raises:
-    """uuid4() sets the high 2 bits of byte 8 to 0b10."""
+    """Sets the high 2 bits of byte 8 to 0b10."""
     for _ in range(10):
         var u = uuid4()
         assert_equal(Int(u.bytes[8] >> 6), 2, "byte8 high 2 bits == 0b10")
@@ -100,7 +100,7 @@ def test_uuid4_uniqueness_small() raises:
 
 
 def test_uuid4_not_nil() raises:
-    """uuid4() never produces the nil UUID."""
+    """Never produces the nil UUID."""
     for _ in range(10):
         assert_false(uuid4().is_nil(), "uuid4() must not be nil")
 
@@ -111,7 +111,7 @@ def test_uuid4_not_nil() raises:
 
 
 def test_uuid4_batch_distinct() raises:
-    """uuid4_batch[N]() returns N distinct UUIDs."""
+    """Returns N distinct UUIDs."""
     var batch = uuid4_batch[5]()
     # Verify all 5 are distinct by comparing each pair.
     for i in range(5):

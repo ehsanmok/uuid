@@ -20,7 +20,7 @@ Example:
     print(id.variant())  # 2
 """
 
-from random import random_ui64
+from std.random import random_ui64
 from uuid.core import UUID
 
 

@@ -157,23 +157,23 @@ struct UUID(Copyable, Movable, Writable, Hashable):
         # Segments end at hex positions: 8, 12, 16, 20, 32
         # with dashes between segments.
         var pos = 0
-        for i in range(8):
+        for _ in range(8):
             writer.write(chr(Int(encoded[pos])))
             pos += 1
         writer.write("-")
-        for i in range(4):
+        for _ in range(4):
             writer.write(chr(Int(encoded[pos])))
             pos += 1
         writer.write("-")
-        for i in range(4):
+        for _ in range(4):
             writer.write(chr(Int(encoded[pos])))
             pos += 1
         writer.write("-")
-        for i in range(4):
+        for _ in range(4):
             writer.write(chr(Int(encoded[pos])))
             pos += 1
         writer.write("-")
-        for i in range(12):
+        for _ in range(12):
             writer.write(chr(Int(encoded[pos])))
             pos += 1
 
