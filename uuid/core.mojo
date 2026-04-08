@@ -122,8 +122,7 @@ struct UUID(Copyable, Movable, Writable, Hashable):
         # Segment 4: s[24..35] -> hex32[20..31] (12 chars)
         for j in range(12):
             hex32[20 + j] = b[24 + j]
-        var span = Span[UInt8, origin_of(hex32)](hex32)
-        return UUID(hex_decode_32(span))
+        return UUID(hex_decode_32(Span(hex32)))
 
     def to_hex(self) -> String:
         """Return the UUID as a 32-character lowercase hex string without dashes.
