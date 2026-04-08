@@ -40,18 +40,21 @@ var ids = uuid4_batch[100]()
 
 ## Installation
 
-Add as a pixi dependency:
+Add uuid to your project's `pixi.toml`:
 
 ```toml
+[workspace]
+channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
+preview = ["pixi-build"]
+
 [dependencies]
-uuid = { git = "https://github.com/ehsanmok/uuid.git", branch = "main" }
+uuid = { git = "https://github.com/ehsanmok/uuid.git" }
 ```
 
-Then use with:
+Then run:
 
 ```bash
 pixi install
-mojo -I .pixi/envs/default/lib/mojo your_file.mojo
 ```
 
 ## API Reference
