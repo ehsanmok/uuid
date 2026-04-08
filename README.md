@@ -230,10 +230,6 @@ pixi run example
 - [uuid-simd (Rust)](https://docs.rs/uuid-simd/latest/uuid_simd/)
 - [fastuuid (Python/Rust)](https://github.com/fastuuid/fastuuid)
 
-## Contributing
-
-Contributions welcome. Please open an issue or pull request on GitHub.
-
 ## License
 
-MIT — see [LICENSE](LICENSE).
+[MIT](LICENSE)

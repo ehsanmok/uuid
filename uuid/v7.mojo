@@ -103,7 +103,7 @@ def uuid7() -> UUID:
     """Generate a time-ordered UUID version 7 per RFC 9562.
 
     Embeds a 48-bit Unix millisecond timestamp, a 12-bit `rand_a` field, and
-    62 random bits. This function is stateless — for strict sub-millisecond
+    62 random bits. This function is stateless; for strict sub-millisecond
     monotonicity across successive calls, use `V7Generator` instead.
 
     Returns:
