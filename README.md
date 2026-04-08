@@ -1,6 +1,7 @@
 # uuid
 
 [![CI](https://github.com/ehsanmok/uuid/actions/workflows/ci.yml/badge.svg)](https://github.com/ehsanmok/uuid/actions)
+[![Docs](https://github.com/ehsanmok/uuid/actions/workflows/docs.yaml/badge.svg)](https://ehsanmok.github.io/uuid)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Fast UUID v4 and v7 generation for Mojo with SIMD-accelerated hex encoding.
