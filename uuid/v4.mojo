@@ -6,9 +6,9 @@ the version and variant fields to comply with RFC 9562:
     - Bits 76-79 (high nibble of byte 6) = 0100 (version 4)
     - Bits 62-63 (high 2 bits of byte 8) = 10   (RFC 4122/9562 variant)
 
-Two calls to `random_ui64()` provide 128 random bits for the full UUID,
-and the version/variant bits are applied with bitwise operations directly
-on the SIMD register.
+Entropy is obtained directly from the OS via `/dev/urandom` (POSIX), which
+provides cryptographically strong randomness. This avoids the deterministic
+output of `std.random`'s PRNG when its global state is unseeded (seed = 0).
 
 Example:
 
@@ -20,20 +20,27 @@ Example:
     print(id.variant())  # 2
 """
 
-from std.random import random_ui64
+from std.collections import InlineArray
+from std.ffi import external_call
 from uuid.core import UUID
 
 
 @always_inline
-def uuid4() -> UUID:
+def uuid4() raises -> UUID:
     """Generate a random UUID version 4 per RFC 9562.
 
-    Fills 128 bits with random data using two `random_ui64()` calls, then
-    sets the version field to `4` and the variant field to the RFC 9562
-    value (`0b10`).
+    Reads 16 bytes of OS entropy from `/dev/urandom`, then sets the version
+    field to `4` and the variant field to the RFC 9562 value (`0b10`).
+
+    Unlike `random_ui64()`, `/dev/urandom` is seeded by the OS at boot and is
+    safe to call immediately without explicit seeding. This guarantees unique
+    output across process restarts, forks, and concurrent callers.
 
     Returns:
         A new UUID with version=4 and variant=2 (RFC 9562).
+
+    Raises:
+        Error: If entropy cannot be read from `/dev/urandom`.
 
     Example:
 
@@ -42,14 +49,25 @@ def uuid4() -> UUID:
         print(id.variant())  # 2
         print(id)            # "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
     """
-    var hi = random_ui64(0, UInt64.MAX)
-    var lo = random_ui64(0, UInt64.MAX)
+    var buf = InlineArray[UInt8, 16](fill=0)
 
-    # Unpack hi (bytes 0-7) and lo (bytes 8-15) into a SIMD vector.
+    # Read 16 bytes of OS entropy. O_RDONLY = 0 on macOS and Linux.
+    var path = String("/dev/urandom")
+    var fd = external_call["open", Int32](path.unsafe_ptr(), Int32(0))
+    if fd < 0:
+        raise Error("uuid4: cannot open /dev/urandom (fd=" + String(fd) + ")")
+    var nread = external_call["read", Int64](fd, buf.unsafe_ptr(), Int64(16))
+    _ = external_call["close", Int32](fd)
+    if nread != Int64(16):
+        raise Error(
+            "uuid4: short read from /dev/urandom ("
+            + String(nread)
+            + "/16 bytes)"
+        )
+
     var b = SIMD[DType.uint8, 16]()
-    for i in range(8):
-        b[i] = UInt8((hi >> UInt64(56 - i * 8)) & 0xFF)
-        b[i + 8] = UInt8((lo >> UInt64(56 - i * 8)) & 0xFF)
+    for i in range(16):
+        b[i] = buf[i]
 
     # Set version: high nibble of byte 6 = 0100 (version 4).
     b[6] = (b[6] & 0x0F) | 0x40
@@ -59,11 +77,11 @@ def uuid4() -> UUID:
     return UUID(b)
 
 
-def uuid4_batch[N: Int]() -> InlineArray[UUID, N]:
+def uuid4_batch[N: Int]() raises -> InlineArray[UUID, N]:
     """Generate `N` random UUID v4 values in a single call.
 
-    Amortizes the function call overhead across `N` UUIDs. Useful when
-    many UUIDs are needed at once (e.g. bulk record creation).
+    Each UUID is independently generated from OS entropy. Useful when many
+    UUIDs are needed at once (e.g. bulk record creation).
 
     Parameters:
         N: The number of UUIDs to generate. Must be a positive compile-time
@@ -71,6 +89,9 @@ def uuid4_batch[N: Int]() -> InlineArray[UUID, N]:
 
     Returns:
         An `InlineArray[UUID, N]` with `N` independently random v4 UUIDs.
+
+    Raises:
+        Error: If entropy cannot be read from `/dev/urandom`.
 
     Example:
 
