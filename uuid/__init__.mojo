@@ -129,7 +129,7 @@ UUID v7 bit layout:
 | uuid.simd_hex    | SIMD hex encode/decode primitives                      |
 """
 
-from uuid.core import UUID
-from uuid.v4 import uuid4, uuid4_batch
-from uuid.v7 import uuid7, uuid7_extract_ms, V7Generator
-from uuid.simd_hex import hex_encode_16, hex_decode_32, nibble_to_hex
+from .core import UUID
+from .v4 import uuid4, uuid4_batch
+from .v7 import uuid7, uuid7_extract_ms, V7Generator
+from .simd_hex import hex_encode_16, hex_decode_32, nibble_to_hex
