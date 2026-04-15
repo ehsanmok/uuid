@@ -22,7 +22,7 @@ print(id)             # "a8098c1a-f86e-11da-bd1a-00112444be1e"
 print(id.version())   # 4
 print(id.variant())   # 2  (RFC 9562)
 
-# Time-ordered UUID (version 7) — embeds Unix ms timestamp for natural sort
+# Time-ordered UUID (version 7), embeds Unix ms timestamp for natural sort
 var t = uuid7()
 print(t.version())    # 7
 var ms = uuid7_extract_ms(t)
@@ -35,7 +35,7 @@ print(p.to_hex())     # "550e8400e29b41d4a716446655440000"
 var nil = UUID.nil()
 print(nil.is_nil())   # True
 
-# Batch generation — N v4 UUIDs in one call
+# Batch generation: N v4 UUIDs in one call
 var ids = uuid4_batch[100]()
 ```
 
