@@ -49,7 +49,7 @@ channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
 preview = ["pixi-build"]
 
 [dependencies]
-uuid = { git = "https://github.com/ehsanmok/uuid.git", branch = "main" }
+uuid = { git = "https://github.com/ehsanmok/uuid.git", tag = "v0.1.0" }
 ```
 
 Then run:
@@ -59,6 +59,13 @@ pixi install
 ```
 
 Requires [pixi](https://pixi.sh) (pulls Mojo nightly automatically).
+
+For the latest development version:
+
+```toml
+[dependencies]
+uuid = { git = "https://github.com/ehsanmok/uuid.git", branch = "main" }
+```
 
 ## v4 vs v7: When to Use Which
 
