@@ -11,27 +11,6 @@ encoding processes all bytes simultaneously via vectorized nibble arithmetic
 and a compile-time interleave shuffle, inspired by
 [Richard Lupton's SIMD hex encoding](https://richardlupton.com/posts/simd-hex/).
 
-## Installation
-
-Add uuid to your project's `pixi.toml`:
-
-```toml
-[workspace]
-channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
-preview = ["pixi-build"]
-
-[dependencies]
-uuid = { git = "https://github.com/ehsanmok/uuid.git", branch = "main" }
-```
-
-Then run:
-
-```bash
-pixi install
-```
-
-Requires [pixi](https://pixi.sh) (pulls Mojo nightly automatically).
-
 ## Quick Start
 
 ```mojo
@@ -59,6 +38,27 @@ print(nil.is_nil())   # True
 # Batch generation — N v4 UUIDs in one call
 var ids = uuid4_batch[100]()
 ```
+
+## Installation
+
+Add uuid to your project's `pixi.toml`:
+
+```toml
+[workspace]
+channels = ["https://conda.modular.com/max-nightly", "conda-forge"]
+preview = ["pixi-build"]
+
+[dependencies]
+uuid = { git = "https://github.com/ehsanmok/uuid.git", branch = "main" }
+```
+
+Then run:
+
+```bash
+pixi install
+```
+
+Requires [pixi](https://pixi.sh) (pulls Mojo nightly automatically).
 
 ## v4 vs v7: When to Use Which
 
@@ -119,6 +119,8 @@ Benchmarks on Apple M-series (run `pixi run bench` to reproduce):
 | `String(UUID)`       | < 50 ns      |
 | `uuid4_batch[100]`   | < 5 µs       |
 
+Full API reference: [ehsanmok.github.io/uuid](https://ehsanmok.github.io/uuid)
+
 ## Development
 
 ```bash
@@ -133,8 +135,6 @@ pixi run example        # run examples/example.mojo
 
 pixi run -e dev docs    # build + serve API docs locally
 ```
-
-Full API reference: [ehsanmok.github.io/uuid](https://ehsanmok.github.io/uuid)
 
 ## License
 
