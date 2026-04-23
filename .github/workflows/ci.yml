@@ -26,7 +26,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-14]
+        # Modular supports Ubuntu 22.04 LTS only; GitHub's `ubuntu-latest`
+        # alias (24.04 / glibc 2.39) crashes Mojo's JIT runtime.
+        # https://docs.modular.com/max/packages/#system-requirements
+        os: [ubuntu-22.04, macos-14]
 
     steps:
       - uses: actions/checkout@v4
@@ -38,9 +41,4 @@ jobs:
           post-cleanup: false
 
       - name: Run tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          retry_wait_seconds: 30
-          command: pixi run tests
+        run: pixi run tests
