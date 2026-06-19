@@ -19,14 +19,7 @@ def section(name: String):
     print("\n--- " + name + " ---")
 
 
-def main() raises:
-    print("=" * 60)
-    print("uuid library examples")
-    print("=" * 60)
-
-    # =========================================================================
-    # UUID v4: random generation
-    # =========================================================================
+def demo_v4() raises:
     section("UUID v4 (random)")
 
     var id4 = uuid4()
@@ -35,9 +28,8 @@ def main() raises:
     print("Variant:    ", id4.variant())   # 2 (RFC 9562)
     print("Is nil:     ", id4.is_nil())    # False
 
-    # =========================================================================
-    # UUID v7: time-ordered generation
-    # =========================================================================
+
+def demo_v7() raises:
     section("UUID v7 (time-ordered)")
 
     var id7a = uuid7()
@@ -52,9 +44,8 @@ def main() raises:
     var sb = String(id7b)
     print("Time-ordered: first <= second:", sa <= sb)  # True
 
-    # =========================================================================
-    # Parsing from string
-    # =========================================================================
+
+def demo_parsing() raises:
     section("Parsing from string")
 
     var known = "550e8400-e29b-41d4-a716-446655440000"
@@ -75,18 +66,17 @@ def main() raises:
     except e:
         print("Parse error (expected):", e)
 
-    # =========================================================================
-    # Hex formatting (no dashes)
-    # =========================================================================
+
+def demo_hex() raises:
     section("Hex formatting (no dashes)")
 
+    var parsed = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
     var hex_str = parsed.to_hex()
     print("Hex (no dashes):", hex_str)
-    print("Length:", len(hex_str))  # 32
+    print("Length:", hex_str.byte_length())  # 32
 
-    # =========================================================================
-    # Equality comparison
-    # =========================================================================
+
+def demo_equality() raises:
     section("Equality comparison")
 
     var a = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
@@ -95,47 +85,61 @@ def main() raises:
     print("a == b:", a == b)   # True
     print("a != c:", a != c)   # True (almost certainly)
 
-    # =========================================================================
-    # Nil UUID
-    # =========================================================================
+
+def demo_nil() raises:
     section("Nil UUID")
 
-    var nil = UUID.nil()
-    print("Nil UUID:   ", nil)
-    print("Is nil:     ", nil.is_nil())   # True
+    var nil_uuid = UUID.nil()
+    print("Nil UUID:   ", nil_uuid)
+    print("Is nil:     ", nil_uuid.is_nil())   # True
     print("Non-nil is_nil:", uuid4().is_nil())  # False
 
-    # =========================================================================
-    # Raw bytes access
-    # =========================================================================
+
+def demo_raw_bytes() raises:
     section("Raw bytes access")
 
     var u = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
-    var bytes = u.to_bytes()
     # Access individual bytes via the underlying SIMD vector.
     print("bytes[0] =", Int(u.bytes[0]))   # 85 (0x55)
     print("bytes[1] =", Int(u.bytes[1]))   # 14 (0x0e)
     print("hex string =", u.to_hex())      # "550e8400e29b41d4a716446655440000"
 
-    # =========================================================================
-    # Batch generation
-    # =========================================================================
+
+def demo_batch() raises:
     section("Batch generation (5 v4 UUIDs)")
 
     var batch = uuid4_batch[5]()
     for i in range(5):
         print("  [" + String(i) + "]", batch[i])
 
-    # =========================================================================
-    # Hash (for use in collections)
-    # =========================================================================
+
+def demo_hash() raises:
     section("Hash")
 
+    var a = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
+    var b = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
+    var c = uuid4()
     var h1 = hash(a)
     var h2 = hash(b)
     var h3 = hash(c)
     print("hash(a) == hash(b):", h1 == h2)   # True (same UUID)
     print("hash(a) == hash(c):", h1 == h3)   # False (different UUID)
+
+
+def main() raises:
+    print("=" * 60)
+    print("uuid library examples")
+    print("=" * 60)
+
+    demo_v4()
+    demo_v7()
+    demo_parsing()
+    demo_hex()
+    demo_equality()
+    demo_nil()
+    demo_raw_bytes()
+    demo_batch()
+    demo_hash()
 
     print("\n" + "=" * 60)
     print("All examples completed successfully.")
