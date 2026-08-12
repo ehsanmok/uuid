@@ -1,7 +1,12 @@
 """Tests for SIMD hex encode/decode utilities in uuid.simd_hex."""
 
 from std.testing import assert_equal, assert_true, assert_false, TestSuite
-from uuid.simd_hex import hex_encode_16, hex_decode_32, nibble_to_hex, hex_char_to_nibble
+from uuid.simd_hex import (
+    hex_encode_16,
+    hex_decode_32,
+    nibble_to_hex,
+    hex_char_to_nibble,
+)
 
 # =============================================================================
 # nibble_to_hex
@@ -100,8 +105,22 @@ def test_hex_char_to_nibble_space_raises() raises:
 def test_encode_known_vector() raises:
     """Produces correct output for a known input."""
     var raw = SIMD[DType.uint8, 16](
-        0x55, 0x0e, 0x84, 0x00, 0xe2, 0x9b, 0x41, 0xd4,
-        0xa7, 0x16, 0x44, 0x66, 0x55, 0x44, 0x00, 0x00,
+        0x55,
+        0x0E,
+        0x84,
+        0x00,
+        0xE2,
+        0x9B,
+        0x41,
+        0xD4,
+        0xA7,
+        0x16,
+        0x44,
+        0x66,
+        0x55,
+        0x44,
+        0x00,
+        0x00,
     )
     var encoded = hex_encode_16(raw)
     var expected = "550e8400e29b41d4a716446655440000"
@@ -137,8 +156,22 @@ def _simd_eq(a: SIMD[DType.uint8, 16], b: SIMD[DType.uint8, 16]) -> Bool:
 def test_roundtrip_known_vector() raises:
     """Decode(encode(x)) == x for a known UUID byte sequence."""
     var raw = SIMD[DType.uint8, 16](
-        0x55, 0x0e, 0x84, 0x00, 0xe2, 0x9b, 0x41, 0xd4,
-        0xa7, 0x16, 0x44, 0x66, 0x55, 0x44, 0x00, 0x00,
+        0x55,
+        0x0E,
+        0x84,
+        0x00,
+        0xE2,
+        0x9B,
+        0x41,
+        0xD4,
+        0xA7,
+        0x16,
+        0x44,
+        0x66,
+        0x55,
+        0x44,
+        0x00,
+        0x00,
     )
     var encoded = hex_encode_16(raw)
     var hex_str = String(capacity=32)

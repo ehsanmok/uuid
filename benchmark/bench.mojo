@@ -67,7 +67,9 @@ def main() raises:
         var batch = uuid4_batch[100]()
         keep(batch[0].bytes)
 
-    bench.bench_function[bench_uuid4_batch](BenchId("generate", "uuid4_batch_100"))
+    bench.bench_function[bench_uuid4_batch](
+        BenchId("generate", "uuid4_batch_100")
+    )
 
     # =========================================================================
     # Parse from string

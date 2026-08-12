@@ -106,7 +106,7 @@ def test_str_format() raises:
     """String(u) returns the 36-character dashed UUID string."""
     var u = UUID.parse(KNOWN_STR)
     var s = String(u)
-    assert_equal(len(s), 36, "formatted string must be 36 chars")
+    assert_equal(s.byte_length(), 36, "formatted string must be 36 chars")
     assert_equal(s, KNOWN_STR)
 
 
@@ -125,7 +125,7 @@ def test_to_hex_no_dashes() raises:
     """Returns 32 characters with no dashes."""
     var u = UUID.parse(KNOWN_STR)
     var h = u.to_hex()
-    assert_equal(len(h), 32, "hex string must be 32 chars")
+    assert_equal(h.byte_length(), 32, "hex string must be 32 chars")
     assert_equal(h, KNOWN_HEX)
 
 
@@ -139,7 +139,10 @@ def test_to_hex_is_lowercase() raises:
         # Must be 0-9 or a-f (not A-F).
         var is_digit = c >= 48 and c <= 57
         var is_lower = c >= 97 and c <= 102
-        assert_true(is_digit or is_lower, "char at " + String(i) + " must be lowercase hex")
+        assert_true(
+            is_digit or is_lower,
+            "char at " + String(i) + " must be lowercase hex",
+        )
 
 
 # =============================================================================

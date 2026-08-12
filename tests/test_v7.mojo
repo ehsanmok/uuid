@@ -121,7 +121,7 @@ def test_uuid7_monotonic_timestamp() raises:
 def test_uuid7_string_length() raises:
     """String(uuid7()) produces a 36-character string."""
     var u = uuid7()
-    assert_equal(len(String(u)), 36, "UUID string must be 36 chars")
+    assert_equal(String(u).byte_length(), 36, "UUID string must be 36 chars")
 
 
 def test_uuid7_version_char_in_string() raises:

@@ -22,7 +22,7 @@ Example:
 from uuid.simd_hex import hex_encode_16, hex_decode_32
 
 
-struct UUID(Copyable, Movable, Writable, Hashable):
+struct UUID(Copyable, Hashable, Movable, Writable):
     """A Universally Unique Identifier (UUID) per RFC 9562.
 
     Stores 128 bits (16 bytes) in a single SIMD register for efficient
@@ -188,7 +188,7 @@ struct UUID(Copyable, Movable, Writable, Hashable):
             var u = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
             print(String(u))  # "550e8400-e29b-41d4-a716-446655440000"
         """
-        return String.write(self)
+        return String(self)
 
     @always_inline
     def version(self) -> Int:
@@ -303,4 +303,4 @@ struct UUID(Copyable, Movable, Writable, Hashable):
         var result = InlineArray[UInt8, 16](uninitialized=True)
         for i in range(16):
             result[i] = self.bytes[i]
-        return result
+        return result^

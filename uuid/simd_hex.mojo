@@ -47,10 +47,9 @@ def nibble_to_hex(n: SIMD[DType.uint8, 16]) -> SIMD[DType.uint8, 16]:
     # Shifting right by 7 extracts the high bit: 1 when n<10, 0 when n≥10.
     var is_digit = (n - SIMD[DType.uint8, 16](10)) >> 7
     # is_digit==1 → offset=48 ('0'), is_digit==0 → offset=87 ('a'-10=87).
-    var offset = (
-        is_digit * SIMD[DType.uint8, 16](48)
-        + (SIMD[DType.uint8, 16](1) - is_digit) * SIMD[DType.uint8, 16](87)
-    )
+    var offset = is_digit * SIMD[DType.uint8, 16](48) + (
+        SIMD[DType.uint8, 16](1) - is_digit
+    ) * SIMD[DType.uint8, 16](87)
     return n + offset
 
 
@@ -80,10 +79,38 @@ def hex_encode_16(bytes: SIMD[DType.uint8, 16]) -> SIMD[DType.uint8, 32]:
     # Join into a 32-element vector, then interleave: hi[0],lo[0],hi[1],lo[1],...
     var joined = hi.join(lo)
     return joined.shuffle[
-        0, 16, 1, 17, 2, 18, 3, 19,
-        4, 20, 5, 21, 6, 22, 7, 23,
-        8, 24, 9, 25, 10, 26, 11, 27,
-        12, 28, 13, 29, 14, 30, 15, 31,
+        0,
+        16,
+        1,
+        17,
+        2,
+        18,
+        3,
+        19,
+        4,
+        20,
+        5,
+        21,
+        6,
+        22,
+        7,
+        23,
+        8,
+        24,
+        9,
+        25,
+        10,
+        26,
+        11,
+        27,
+        12,
+        28,
+        13,
+        29,
+        14,
+        30,
+        15,
+        31,
     ]()
 
 

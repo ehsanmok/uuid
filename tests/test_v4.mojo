@@ -45,7 +45,7 @@ def test_uuid4_byte8_high_bits() raises:
 def test_uuid4_string_length() raises:
     """String(uuid4()) produces a 36-character string."""
     var u = uuid4()
-    assert_equal(len(String(u)), 36, "UUID string must be 36 chars")
+    assert_equal(String(u).byte_length(), 36, "UUID string must be 36 chars")
 
 
 def test_uuid4_string_dash_positions() raises:
@@ -72,7 +72,9 @@ def test_uuid4_variant_char_in_string() raises:
     var s = String(u)
     var c = s.as_bytes()[19]
     # RFC 9562 variant: high 2 bits = 10 -> first hex char is 8,9,a,b
-    var valid = (c == 56) or (c == 57) or (c == 97) or (c == 98)  # '8','9','a','b'
+    var valid = (
+        (c == 56) or (c == 57) or (c == 97) or (c == 98)
+    )  # '8','9','a','b'
     assert_true(valid, "variant char at pos 19 must be 8, 9, a, or b")
 
 

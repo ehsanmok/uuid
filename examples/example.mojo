@@ -24,9 +24,9 @@ def demo_v4() raises:
 
     var id4 = uuid4()
     print("Generated:  ", id4)
-    print("Version:    ", id4.version())   # 4
-    print("Variant:    ", id4.variant())   # 2 (RFC 9562)
-    print("Is nil:     ", id4.is_nil())    # False
+    print("Version:    ", id4.version())  # 4
+    print("Variant:    ", id4.variant())  # 2 (RFC 9562)
+    print("Is nil:     ", id4.is_nil())  # False
 
 
 def demo_v7() raises:
@@ -51,8 +51,8 @@ def demo_parsing() raises:
     var known = "550e8400-e29b-41d4-a716-446655440000"
     var parsed = UUID.parse(known)
     print("Parsed:     ", parsed)
-    print("Version:    ", parsed.version())   # 4
-    print("Variant:    ", parsed.variant())   # 2
+    print("Version:    ", parsed.version())  # 4
+    print("Variant:    ", parsed.variant())  # 2
     print("Roundtrip OK:", String(parsed) == known)  # True
 
     # Uppercase input is also accepted.
@@ -82,8 +82,8 @@ def demo_equality() raises:
     var a = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
     var b = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
     var c = uuid4()
-    print("a == b:", a == b)   # True
-    print("a != c:", a != c)   # True (almost certainly)
+    print("a == b:", a == b)  # True
+    print("a != c:", a != c)  # True (almost certainly)
 
 
 def demo_nil() raises:
@@ -91,7 +91,7 @@ def demo_nil() raises:
 
     var nil_uuid = UUID.nil()
     print("Nil UUID:   ", nil_uuid)
-    print("Is nil:     ", nil_uuid.is_nil())   # True
+    print("Is nil:     ", nil_uuid.is_nil())  # True
     print("Non-nil is_nil:", uuid4().is_nil())  # False
 
 
@@ -100,9 +100,9 @@ def demo_raw_bytes() raises:
 
     var u = UUID.parse("550e8400-e29b-41d4-a716-446655440000")
     # Access individual bytes via the underlying SIMD vector.
-    print("bytes[0] =", Int(u.bytes[0]))   # 85 (0x55)
-    print("bytes[1] =", Int(u.bytes[1]))   # 14 (0x0e)
-    print("hex string =", u.to_hex())      # "550e8400e29b41d4a716446655440000"
+    print("bytes[0] =", Int(u.bytes[0]))  # 85 (0x55)
+    print("bytes[1] =", Int(u.bytes[1]))  # 14 (0x0e)
+    print("hex string =", u.to_hex())  # "550e8400e29b41d4a716446655440000"
 
 
 def demo_batch() raises:
@@ -122,8 +122,8 @@ def demo_hash() raises:
     var h1 = hash(a)
     var h2 = hash(b)
     var h3 = hash(c)
-    print("hash(a) == hash(b):", h1 == h2)   # True (same UUID)
-    print("hash(a) == hash(c):", h1 == h3)   # False (different UUID)
+    print("hash(a) == hash(b):", h1 == h2)  # True (same UUID)
+    print("hash(a) == hash(c):", h1 == h3)  # False (different UUID)
 
 
 def main() raises:
