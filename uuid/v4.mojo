@@ -20,7 +20,7 @@ Example:
     print(id.variant())  # 2
 """
 
-from std.collections import InlineArray
+from std.collections import Array
 from std.ffi import external_call
 from uuid.core import UUID
 
@@ -49,7 +49,7 @@ def uuid4() raises -> UUID:
         print(id.variant())  # 2
         print(id)            # "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
     """
-    var buf = InlineArray[UInt8, 16](fill=0)
+    var buf = Array[UInt8, 16](fill=0)
 
     # Read 16 bytes of OS entropy. O_RDONLY = 0 on macOS and Linux.
     var path = String("/dev/urandom")
@@ -77,7 +77,7 @@ def uuid4() raises -> UUID:
     return UUID(b)
 
 
-def uuid4_batch[N: Int]() raises -> InlineArray[UUID, N]:
+def uuid4_batch[N: Int]() raises -> Array[UUID, N]:
     """Generate `N` random UUID v4 values in a single call.
 
     Each UUID is independently generated from OS entropy. Useful when many
@@ -88,7 +88,7 @@ def uuid4_batch[N: Int]() raises -> InlineArray[UUID, N]:
             constant.
 
     Returns:
-        An `InlineArray[UUID, N]` with `N` independently random v4 UUIDs.
+        An `Array[UUID, N]` with `N` independently random v4 UUIDs.
 
     Raises:
         Error: If entropy cannot be read from `/dev/urandom`.
@@ -99,7 +99,7 @@ def uuid4_batch[N: Int]() raises -> InlineArray[UUID, N]:
         for i in range(100):
             print(ids[i])
     """
-    var result = InlineArray[UUID, N](uninitialized=True)
+    var result = Array[UUID, N](uninitialized=True)
     for i in range(N):
         result[i] = uuid4()
     return result^

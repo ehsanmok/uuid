@@ -19,6 +19,7 @@ Example:
     print(u == UUID.nil())  # False
 """
 
+from std.collections import Array
 from uuid.simd_hex import hex_encode_16, hex_decode_32
 
 
@@ -106,7 +107,7 @@ struct UUID(Copyable, Hashable, Movable, Writable):
                 "UUID string must have dashes at positions 8, 13, 18, 23"
             )
         # Build a contiguous 32-hex-char buffer by stripping the 4 dashes.
-        var hex32 = InlineArray[UInt8, 32](uninitialized=True)
+        var hex32 = Array[UInt8, 32](uninitialized=True)
         # Segment 0: s[0..7]  -> hex32[0..7]  (8 chars)
         for j in range(8):
             hex32[j] = b[j]
@@ -136,7 +137,7 @@ struct UUID(Copyable, Hashable, Movable, Writable):
             print(u.to_hex())  # "550e8400e29b41d4a716446655440000"
         """
         var encoded = hex_encode_16(self.bytes)
-        var result = String(capacity=32)
+        var result = String(capacity_bytes=32)
         for i in range(32):
             result += chr(Int(encoded[i]))
         return result
@@ -286,13 +287,13 @@ struct UUID(Copyable, Hashable, Movable, Writable):
             h = h * 1099511628211
         return h
 
-    def to_bytes(self) -> InlineArray[UInt8, 16]:
+    def to_bytes(self) -> Array[UInt8, 16]:
         """Return the 16 UUID bytes as a fixed-size inline array.
 
         Bytes are in big-endian (network) order per RFC 9562.
 
         Returns:
-            An `InlineArray[UInt8, 16]` containing the raw UUID bytes.
+            An `Array[UInt8, 16]` containing the raw UUID bytes.
 
         Example:
 
@@ -300,7 +301,7 @@ struct UUID(Copyable, Hashable, Movable, Writable):
             var b = u.to_bytes()
             # b[6] >> 4 == 4  (version bits)
         """
-        var result = InlineArray[UInt8, 16](uninitialized=True)
+        var result = Array[UInt8, 16](uninitialized=True)
         for i in range(16):
             result[i] = self.bytes[i]
         return result^

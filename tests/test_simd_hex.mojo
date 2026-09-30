@@ -174,7 +174,7 @@ def test_roundtrip_known_vector() raises:
         0x00,
     )
     var encoded = hex_encode_16(raw)
-    var hex_str = String(capacity=32)
+    var hex_str = String(capacity_bytes=32)
     for i in range(32):
         hex_str += chr(Int(encoded[i]))
     var decoded = hex_decode_32(hex_str.as_bytes())
@@ -188,7 +188,7 @@ def test_roundtrip_all_bytes() raises:
     for i in range(16):
         raw[i] = UInt8(i * 16)  # 0x00, 0x10, 0x20, ..., 0xF0
     var encoded = hex_encode_16(raw)
-    var hex_str = String(capacity=32)
+    var hex_str = String(capacity_bytes=32)
     for i in range(32):
         hex_str += chr(Int(encoded[i]))
     var decoded = hex_decode_32(hex_str.as_bytes())

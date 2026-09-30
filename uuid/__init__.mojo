@@ -107,7 +107,7 @@ UUID v7 bit layout:
 | `u.is_nil() -> Bool`           | True if all 128 bits are zero                   |
 | `u == other` / `u != other`    | Equality comparison                             |
 | `hash(u)`                      | Hash for use in sets / dicts                    |
-| `u.to_bytes()`                 | Raw bytes as `InlineArray[UInt8, 16]`           |
+| `u.to_bytes()`                 | Raw bytes as `Array[UInt8, 16]`                 |
 | `u.bytes`                      | Direct `SIMD[DType.uint8, 16]` access           |
 
 ### Generation functions
