@@ -57,7 +57,7 @@ def _millis_since_epoch() -> UInt64:
     """
     var tv = _Timeval()
     # Pass null (0) for the timezone argument (unused).
-    _ = external_call["gettimeofday", Int32](UnsafePointer(to=tv), Int64(0))
+    _ = external_call["gettimeofday", Int32](Pointer(to=tv), Int64(0))
     return UInt64(tv.tv_sec) * 1000 + UInt64(tv.tv_usec) // 1000
 
 
