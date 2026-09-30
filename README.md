@@ -49,7 +49,7 @@ channels = ["https://conda.modular.com/max", "conda-forge"]
 preview = ["pixi-build"]
 
 [dependencies]
-uuid = { git = "https://github.com/ehsanmok/uuid.git", tag = "v0.2.0" }
+uuid = { git = "https://github.com/ehsanmok/uuid.git", tag = "v0.2.1" }
 ```
 
 Then run:
